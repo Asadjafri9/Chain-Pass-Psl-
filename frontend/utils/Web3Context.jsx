@@ -17,6 +17,30 @@ export function Web3Provider({ children }) {
   const [web3Error, setWeb3Error] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const requestAccountAccess = useCallback(async () => {
+    if (!window.ethereum?.request) return;
+    try {
+      await window.ethereum.request({
+        method: 'wallet_requestPermissions',
+        params: [{ eth_accounts: {} }]
+      });
+    } catch (error) {
+      console.debug('Account permission request ignored:', error);
+    }
+  }, []);
+
+  const revokeAccountAccess = useCallback(async () => {
+    if (!window.ethereum?.request) return;
+    try {
+      await window.ethereum.request({
+        method: 'wallet_revokePermissions',
+        params: [{ eth_accounts: {} }]
+      });
+    } catch (error) {
+      console.debug('Account permission revoke ignored:', error);
+    }
+  }, []);
+
   const clearSession = useCallback(() => {
     setAccount(null);
     setContract(null);
@@ -99,7 +123,13 @@ export function Web3Provider({ children }) {
   }, [clearSession]);
 
   const connectWallet = async () => {
+    await requestAccountAccess();
     await syncWalletState(true);
+  };
+
+  const disconnectWallet = async () => {
+    await revokeAccountAccess();
+    clearSession();
   };
 
   useEffect(() => {
@@ -144,7 +174,7 @@ export function Web3Provider({ children }) {
         canAccessAdminTools: isOwner || isScanner,
         web3Error,
         connectWallet,
-        disconnectWallet: clearSession,
+        disconnectWallet,
         loading
       }}
     >
