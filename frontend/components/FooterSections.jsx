@@ -47,7 +47,7 @@ export function CTASection() {
     { k: 'PERSON_CAP', v: 'UP TO 5 PEOPLE', gold: true },
     { k: 'ENTRY_CHECK', v: 'QR + CNIC HASH', gold: false },
     { k: 'SCANNER_AUTH', v: 'OWNER OR AUTHORIZED', gold: false },
-    { k: 'QR_REFRESH', v: 'EVERY 60s', gold: true },
+    { k: 'QR_REFRESH', v: 'EVERY 90s', gold: true },
   ];
 
   return (
