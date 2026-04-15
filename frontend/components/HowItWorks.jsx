@@ -1,23 +1,23 @@
 const STEPS = [
   {
     num: '01',
-    title: 'LOGIN_WITH_WALLET',
-    desc: 'Connect your wallet to verify your identity. Your ticket ownership stays bound to the same wallet from mint to entry.',
+    title: 'CONNECT_METAMASK',
+    desc: 'Connect your wallet on WireFluid testnet. The app checks chain ID and contract availability before enabling mint or scanner actions.',
   },
   {
     num: '02',
-    title: 'PAY_WITH_WIREFLUID',
-    desc: 'Pay directly on WireFluid. The mint transaction is recorded on-chain and tied to your wallet.',
+    title: 'SELECT_MATCH_AND_ENCLOSURE',
+    desc: 'Choose an active match and available enclosure, then set person count (1 to 5). Price is calculated from enclosure rate multiplied by person count.',
   },
   {
     num: '03',
-    title: 'NFT_LIVES_IN_WALLET',
-    desc: 'Your ticket appears in "My Tickets" as a verifiable NFT. It is a permanent on-chain record of attendance and fan status.',
+    title: 'MINT_SOULBOUND_FAMILY_PASS',
+    desc: 'Submit mint with a locally hashed CNIC. The contract records ownership, payment, person count, and identity hash inside a non-transferable NFT pass.',
   },
   {
     num: '04',
-    title: 'SCAN_AT_STADIUM_GATE',
-    desc: 'Present the live-refreshing QR code. The gate scanner verifies on-chain ownership in real time. Verification confirmed — entry granted.',
+    title: 'VERIFY_AT_GATE',
+    desc: 'Present your rotating QR code at entry. Authorized scanner verifies signatures, compares CNIC hash, and marks the ticket as used on-chain.',
   },
 ];
 
@@ -28,7 +28,7 @@ export default function HowItWorks() {
         <div style={styles.tag}>// V3</div>
         <div style={styles.title}>HOW_IT<br />WORKS</div>
         <div style={styles.subtitle}>
-          Wallet-first flow. Four steps from mint to stadium gate.
+          Four implementation-backed steps from minting to on-chain gate admission.
         </div>
       </div>
       <div className="how-it-works-right" style={styles.right}>

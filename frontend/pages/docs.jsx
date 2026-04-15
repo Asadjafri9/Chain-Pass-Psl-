@@ -12,33 +12,33 @@ export default function Docs() {
     {
       tag: '01',
       title: 'THE_MISSION',
-      content: 'ChainPass PSL delivers verifiable, on-chain ticket ownership for PSL matches. Tickets are minted on WireFluid, tied to the buyer, and validated at the stadium gate without manual overrides.'
+      content: 'ChainPass PSL delivers verifiable on-chain ticket ownership for PSL matches. Family passes are minted on WireFluid as ERC-721 soulbound NFTs tied to the buyer wallet and validated at gate entry without manual overrides.'
     },
     {
       tag: '02',
       title: 'SOULBOUND_OWNERSHIP',
-      content: 'Tickets are soulbound ERC-721 NFTs. Transfers are disabled at the contract level, so ownership stays locked to the original wallet from mint to entry.'
+      content: 'Transfer functions are disabled at the contract level, so ownership remains bound to the original wallet from mint to entry. Minting is restricted to one pass per wallet per match with person count constraints enforced on-chain.'
     },
     {
       tag: '03',
       title: 'MATCH_REGISTRY',
-      content: 'Admins register matches on-chain with teams, stadium, time, and capacity. Each ticket binds to a match and enclosure, and the contract enforces match availability and capacity limits.'
+      content: 'Admins register matches on-chain with teams, stadium, timings, and enclosure matrices (name, capacity, and price). The contract enforces active-match checks, enclosure capacity, and stadium limits at mint time.'
     },
     {
       tag: '04',
-      title: 'SECURE_ENTRY_QR',
-      content: 'Entry QR codes are generated dynamically and signed by the holder. Gate scanners verify ownership on-chain before marking a ticket as used.'
+      title: 'IDENTITY_BINDING',
+      content: 'CNIC is formatted and hashed client-side before minting. Only the bytes32 hash is persisted on-chain, preserving privacy while enabling physical-ID validation at entry.'
     },
     {
       tag: '05',
-      title: 'FAN_LEADERBOARDS',
-      content: 'Leaderboards are computed from on-chain tickets. Every match contributes points to both teams in the fixture, highlighting the most engaged fan wallets across the season.'
+      title: 'SECURE_ENTRY_QR',
+      content: 'My Tickets generates a delegated QR payload that rotates on a short interval. Scanner flow verifies signatures, owner address, usage state, and CNIC hash before marking tickets as used on-chain.'
     },
     {
       tag: '06',
-      title: 'WIRE_PAYMENTS',
-      content: 'Ticket purchases are executed directly on WireFluid using the native WIRE token. All payments are verifiable on-chain and tied to the mint transaction.'
-    },
+      title: 'FAN_LEADERBOARDS',
+      content: 'Leaderboard rankings are derived from on-chain mint activity and people-count totals across passes, providing transparent season-wide engagement insights per wallet.'
+    }
   ];
 
   return (
@@ -77,7 +77,7 @@ export default function Docs() {
             <section style={styles.content}>
               <header style={styles.header}>
                 <div style={styles.secTag}>// TECHNICAL_OVERVIEW</div>
-                <h1 style={styles.title}>PROTOCOL_ARCHITECTURE</h1>
+                <h1 style={styles.title}>IMPLEMENTED_ARCHITECTURE</h1>
               </header>
 
               <div style={styles.sections}>
@@ -97,7 +97,8 @@ export default function Docs() {
                 <div style={styles.infoHex}>i</div>
                 <p style={styles.footerText}>
                   This system is configured for <strong>{networkName}</strong> (Chain ID: <strong>{chainId}</strong>){' '}
-                  using RPC <strong>{rpcUrl}</strong>.
+                  using RPC <strong>{rpcUrl}</strong>. Deployment and initialization scripts target the{' '}
+                  <strong>wirefluid</strong> network profile.
                 </p>
               </div>
             </section>

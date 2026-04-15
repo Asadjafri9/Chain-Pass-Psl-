@@ -3,8 +3,8 @@ import { useState } from 'react';
 const FEATURES = [
   {
     idx: 'C_01 //',
-    title: 'SOULBOUND_LOCK',
-    desc: 'Tickets are soulbound ERC-721 NFTs. Transfers are disabled at the contract level, so ownership stays with the original buyer.',
+    title: 'SOULBOUND_PASS_LOCK',
+    desc: 'All transfer functions are blocked in the contract, so a minted pass remains bound to the original buyer wallet. Unauthorized movement is rejected on-chain.',
     pill: 'NON_TRANSFERABLE',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
@@ -15,22 +15,9 @@ const FEATURES = [
   },
   {
     idx: 'C_02 //',
-    title: 'MATCH_CAP_ENFORCEMENT',
-    desc: 'Matches are registered on-chain with stadium capacity and enclosure limits. The contract enforces availability at mint time.',
-    pill: 'ON_CHAIN_RULES',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
-        <path d="M4 7h16" />
-        <path d="M4 12h16" />
-        <path d="M4 17h16" />
-      </svg>
-    ),
-  },
-  {
-    idx: 'C_03 //',
-    title: 'DYNAMIC_QR_ENTRY',
-    desc: 'Gate entry uses a rotating, signed QR payload. Scanners verify ownership and mark tickets as used on-chain.',
-    pill: 'GATE_VERIFIED',
+    title: 'MATCH_ENCLOSURE_MATRIX',
+    desc: 'Each match stores enclosure names, prices, and capacities. Minting is constrained by active match status plus remaining enclosure and venue capacity.',
+    pill: 'CAPACITY_AWARE',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -38,10 +25,22 @@ const FEATURES = [
     ),
   },
   {
+    idx: 'C_03 //',
+    title: 'FAMILY_PASS_MINTING',
+    desc: 'A single NFT pass can cover 1 to 5 people. The contract enforces one mint transaction per wallet for a given match and validates exact payment.',
+    pill: 'MAX_5_PEOPLE',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </svg>
+    ),
+  },
+  {
     idx: 'C_04 //',
-    title: 'SCANNER_AUTHORIZATION',
-    desc: 'Only approved scanners and contract owners can validate entry. Unauthorized scans are rejected at the contract level.',
-    pill: 'ROLE_GATED',
+    title: 'CNIC_HASH_BINDING',
+    desc: 'CNIC is formatted client-side and hashed before mint. The blockchain stores only the hash, preserving privacy while allowing physical-ID verification at entry.',
+    pill: 'PRIVACY_PRESERVING',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
         <rect x="3" y="4" width="18" height="16" rx="2" />
@@ -51,9 +50,9 @@ const FEATURES = [
   },
   {
     idx: 'C_05 //',
-    title: 'FAN_LEADERBOARDS',
-    desc: 'Leaderboards are computed from on-chain tickets. Each match contributes points to both teams in the fixture.',
-    pill: 'TEAM_RANKINGS',
+    title: 'AUTHORIZED_SCANNER_FLOW',
+    desc: 'Only the owner or an explicitly authorized scanner account can mark tickets as used. Scanner flow checks QR signatures, wallet ownership, and CNIC hash.',
+    pill: 'ROLE_GUARDED',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
         <path d="M8 21h8" />
@@ -65,9 +64,9 @@ const FEATURES = [
   },
   {
     idx: 'C_06 //',
-    title: 'PUBLIC_LEDGER_AUDIT',
-    desc: 'Ticket state is public and auditable on-chain, including match linkage, mint counts, and entry usage.',
-    pill: 'OPEN_LEDGER',
+    title: 'LIFETIME_ACTIVITY_RANKING',
+    desc: 'Leaderboard aggregates person-count totals from minted passes per wallet, creating a live all-time ranking sourced directly from chain ticket data.',
+    pill: 'ONCHAIN_ANALYTICS',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />

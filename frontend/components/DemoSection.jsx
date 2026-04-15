@@ -90,7 +90,7 @@ function PriceCapDemo() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const MAX = 2200; // Simplified for demo parity with the hardcoded PKR labels
+  const MAX = 2200; // Local test scale for demo visualization
   const pct = Math.min(((parseFloat(price) || 0) / MAX) * 100, 100);
   const over = parseFloat(price) > MAX;
 
@@ -101,8 +101,7 @@ function PriceCapDemo() {
     setErrorMsg('');
 
     try {
-      // For the demo, we try to list Token ID 0 (the first KK vs LQ ticket minted)
-      // The contract will check the price cap logic
+      // Development-only transaction sandbox against tokenId 0
       const priceInWei = ethers.parseEther((parseFloat(price) / 20000).toString()); // Mocking exchange rate to WIRE
       
       const tx = await contract.listTicket(0, priceInWei);
@@ -111,9 +110,8 @@ function PriceCapDemo() {
     } catch (err) {
       console.error(err);
       setVerdict('reject');
-      // Extract revert reason
       if (err.message.includes("Price exceeds 110% cap")) {
-        setErrorMsg("ANTI-SCALP RULE VIOLATION: Price exceeds 110% of original mint value.");
+        setErrorMsg('LEGACY_SIMULATION_RULE_REJECTED');
       } else {
         setErrorMsg(err.reason || "Transaction failed at smart contract level.");
       }
@@ -125,12 +123,12 @@ function PriceCapDemo() {
   return (
     <div style={styles.demoCard}>
       <div style={styles.demoLabel}>
-        PRICE_CAP_TEST — Original: PKR 2,000 · Max Allowed: PKR 2,200
+        LEGACY_SANDBOX — Internal contract-call test panel retained for development
       </div>
       <div style={styles.inputRow}>
         <input
           type="number"
-          placeholder="Enter resale price (PKR)"
+          placeholder="Enter test value"
           value={price}
           onChange={(e) => { setPrice(e.target.value); setVerdict(null); }}
           style={styles.input}
@@ -143,13 +141,13 @@ function PriceCapDemo() {
           {loading ? 'WAITING_FOR_MINING...' : 'SUBMIT_TXN →'}
         </button>
       </div>
-      <div style={styles.capLabel}>CAP UTILIZATION</div>
+      <div style={styles.capLabel}>TEST_VALUE_SCALE</div>
       <div style={styles.barWrap}>
         <div style={{ ...styles.barFill, width: `${pct}%`, background: over ? 'var(--danger)' : 'var(--g)' }} />
       </div>
       <div style={styles.barEnds}>
-        <span>PKR 0</span>
-        <span>MAX: PKR 2,200</span>
+        <span>0</span>
+        <span>MAX: 2200</span>
       </div>
       {verdict && (
         <div style={{
@@ -159,8 +157,8 @@ function PriceCapDemo() {
           color: verdict === 'approve' ? 'var(--g)' : '#ff6666',
         }}>
           {verdict === 'reject'
-            ? `> TRANSACTION REJECTED\n> Reason: ${errorMsg || 'Price cap exceeded'}\n> Smart contract logic: Code is the Law.`
-            : `> TRANSACTION APPROVED\n> Listing successfully recorded on the blockchain.\n> Verified safe for the secondary market.`
+            ? `> TRANSACTION REJECTED\n> Reason: ${errorMsg || 'Contract rule or method mismatch'}\n> This panel is for controlled internal testing.`
+            : `> TRANSACTION APPROVED\n> Test call confirmed on-chain.\n> Use production pages for real ticket operations.`
           }
         </div>
       )}
@@ -174,15 +172,15 @@ export default function DemoSection() {
       <div style={styles.sectionHead}>
         <div style={styles.secNum}>V4</div>
         <div>
-          <div style={styles.secTag}>// LIVE_DEMO</div>
-          <div style={styles.secTitle}>CONTRACT_INTERACTION</div>
+          <div style={styles.secTag}>// EXPERIENCE_MODULES</div>
+          <div style={styles.secTitle}>QR_AND_DEV_SANDBOX</div>
         </div>
       </div>
       <div style={styles.grid}>
         <PriceCapDemo />
         <div style={styles.demoCard}>
           <div style={styles.demoLabel}>
-            DYNAMIC_QR_DEMO — Live refreshing every 60 seconds
+            DYNAMIC_QR_DEMO — Session-signed QR payload refreshes every 60 seconds
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <QRCode id={1} match="KK vs LQ — 18 APR 2026" enclosure="UPPER_TIER_A" />

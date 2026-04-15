@@ -14,8 +14,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>ChainPass PSL — Blockchain Ticketing</title>
-        <meta name="description" content="PSL tickets as soulbound NFTs. On-chain entry verification, fan leaderboards, and real-time match tracking." />
+        <title>ChainPass PSL — On-Chain Ticket Verification</title>
+        <meta name="description" content="PSL family passes as soulbound NFTs on WireFluid with CNIC hash binding, scanner verification, and live fan leaderboards." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
@@ -32,19 +32,19 @@ export default function Home() {
               <div className="hero-col-left" style={styles.heroLeft}>
                 <div style={styles.eyebrow}>
                   <div style={styles.pulseDot} />
-                  <span style={styles.eyebrowText}>SYS_READY: V26.0 // PSL_SEASON_2026</span>
+                  <span style={styles.eyebrowText}>SYS_READY: V26.0 // WIREFLUID_CHAIN_92533</span>
                 </div>
 
                 <h1 style={styles.heroTitle}>
-                  END<br />
+                  VERIFY<br />
                   <span style={{ color: 'var(--g)', display: 'block' }}>THE</span>
-                  <span style={{ color: 'var(--gold)', display: 'block' }}>SCALPER.</span>
+                  <span style={{ color: 'var(--gold)', display: 'block' }}>ENTRY.</span>
                 </h1>
 
                 <p style={styles.heroDesc}>
-                  Every PSL ticket is a <strong style={{ color: 'var(--text)', fontWeight: 400 }}>soulbound NFT</strong> —
-                  minted on-chain, verified at the gate, and tracked across fan leaderboards by match participation.{' '}
-                  <strong style={{ color: 'var(--text)', fontWeight: 400 }}>Ownership is cryptographic. Entry is provable.</strong>
+                  Every PSL family pass is minted as a <strong style={{ color: 'var(--text)', fontWeight: 400 }}>soulbound ERC-721 NFT</strong> on WireFluid.
+                  One wallet can mint once per match, each pass can cover up to five people, and gate entry is finalized after{' '}
+                  <strong style={{ color: 'var(--text)', fontWeight: 400 }}>QR + CNIC hash verification</strong> by authorized scanners.
                 </p>
 
                 <div style={styles.heroActions}>
@@ -54,9 +54,9 @@ export default function Home() {
                 <div style={styles.badges}>
                   {[
                     { label: 'WIREFLUID_TESTNET', gold: false },
-                    { label: 'SOULBOUND_NFT', gold: false },
-                    { label: 'FAN_LEADERBOARDS', gold: true },
-                    { label: 'ON_CHAIN_ENTRY', gold: false },
+                    { label: 'SOULBOUND_ERC721', gold: false },
+                    { label: 'CNIC_HASH_BINDING', gold: true },
+                    { label: 'FAN_LEADERBOARDS', gold: false },
                   ].map((b) => (
                     <span
                       key={b.label}
@@ -76,19 +76,20 @@ export default function Home() {
               <div className="hero-col-right" style={styles.heroRight}>
                 <div style={styles.marketPreview}>
                   <div style={styles.marketTag}>// MARKETPLACE</div>
-                  <h2 style={styles.marketTitle}>BUY TICKETS, SEE THE LEADERBOARD, AND TRACK LIVE DEMAND.</h2>
+                  <h2 style={styles.marketTitle}>MINT MATCH PASSES, THEN TRACK LIFETIME FAN ACTIVITY.</h2>
                   <p style={styles.marketCopy}>
-                    The purchasing flow now lives in the marketplace. Use it to mint tickets, then watch the fan-based leaderboards update across every team.
+                    The marketplace reads live match and enclosure capacity, then mints one family pass NFT with your selected
+                    person count. Leaderboard rankings are computed from cumulative people totals across on-chain passes.
                   </p>
                   <Link href="/marketplace" className="nav-cta nav-cta--dark">OPEN_MARKETPLACE ↗</Link>
                   <div className="stats-wrap" style={styles.marketStats}>
                     <div style={styles.marketStat}>
-                      <div style={styles.marketStatValue}>LIVE</div>
-                      <div style={styles.marketStatLabel}>LEADERBOARD</div>
+                      <div style={styles.marketStatValue}>1x</div>
+                      <div style={styles.marketStatLabel}>PASS / WALLET / MATCH</div>
                     </div>
                     <div style={styles.marketStat}>
-                      <div style={styles.marketStatValue}>WIRE</div>
-                      <div style={styles.marketStatLabel}>PAYMENTS</div>
+                      <div style={styles.marketStatValue}>UP TO 5</div>
+                      <div style={styles.marketStatLabel}>PEOPLE PER PASS</div>
                     </div>
                   </div>
                 </div>

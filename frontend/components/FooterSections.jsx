@@ -7,8 +7,8 @@ export function ScaleSection() {
         <div style={styles.tag}>// PRIMARY_USE_CASE</div>
         <div style={styles.big}>PSL<br /><span style={{ color: 'var(--g)' }}>2026</span></div>
         <div style={styles.desc}>
-          Solving Pakistan's most visible ticketing crisis — scalping, counterfeits, and zero safe
-          resale infrastructure. Built for the biggest cricket league in the country.
+          Ticket minting and stadium entry verification for Pakistan's biggest cricket stage,
+          with identity-bound family passes and on-chain scanner confirmation.
         </div>
       </div>
       <div className="scale-col" style={styles.col}>
@@ -27,7 +27,7 @@ export function ScaleSection() {
         <div style={styles.tag}>// TECH_STACK</div>
         <div style={styles.big}>WIRE<br /><span style={{ color: 'var(--g)' }}>FLUID</span></div>
         <div className="scale-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
-          {['WireFluid EVM network', 'Solidity ERC-721 soulbound contracts', 'On-chain match registry + scanners', 'Next.js + Ethers.js frontend'].map((item) => (
+          {['Solidity + OpenZeppelin ERC-721URIStorage', 'WireFluid testnet deployment via Hardhat', 'MetaMask wallet connection for minting', 'QR + CNIC hash gate verification flow'].map((item) => (
             <div key={item} style={styles.scItem}>
               <div style={styles.dot} />
               {item}
@@ -43,25 +43,26 @@ export function CTASection() {
   const params = [
     { k: 'NETWORK', v: 'WIREFLUID TESTNET', gold: false },
     { k: 'TOKEN_STANDARD', v: 'ERC-721 (SOULBOUND)', gold: false },
-    { k: 'FAN_LEADERBOARD', v: 'TEAM + OVERALL', gold: true },
-    { k: 'QR_REFRESH', v: 'EVERY 90s', gold: false },
-    { k: 'AUTH', v: 'WEB3AUTH', gold: false },
-    { k: 'PAYMENT', v: 'WIREFLUID', gold: true },
+    { k: 'MINT_RULE', v: '1 PASS / WALLET / MATCH', gold: false },
+    { k: 'PERSON_CAP', v: 'UP TO 5 PEOPLE', gold: true },
+    { k: 'ENTRY_CHECK', v: 'QR + CNIC HASH', gold: false },
+    { k: 'SCANNER_AUTH', v: 'OWNER OR AUTHORIZED', gold: false },
+    { k: 'QR_REFRESH', v: 'EVERY 60s', gold: true },
   ];
 
   return (
     <div className="cta-section" style={styles.cta}>
       <div className="cta-left">
-        <div style={styles.ctaTag}>// INITIALIZE_REGISTRATION</div>
+        <div style={styles.ctaTag}>// INITIALIZE_VERIFIED_ENTRY</div>
         <div style={styles.ctaTitle}>
-          SCALPING<br />ENDS <span style={{ color: 'var(--g)' }}>HERE.</span>
+          VERIFIED<br />ENTRY <span style={{ color: 'var(--g)' }}>STARTS HERE.</span>
         </div>
         <div style={styles.ctaSub}>
-          SECURE YOUR TICKET.<br />OWN IT ON-CHAIN.<br />ENTER THE STADIUM.
+          MINT FAMILY PASS.<br />HOLD SOULBOUND NFT.<br />VERIFY AT GATE.
         </div>
         <div style={styles.ctaBtns}>
           <Link href="/marketplace" className="nav-cta">BROWSE_TICKETS →</Link>
-          <Link href="/docs" className="nav-cta nav-cta--dark">WHITEPAPER ↗</Link>
+          <Link href="/docs" className="nav-cta nav-cta--dark">PROTOCOL_DOCS ↗</Link>
         </div>
       </div>
       <div className="cta-right contract-card" style={styles.contractCard}>
@@ -81,11 +82,11 @@ export function Footer() {
   return (
     <footer className="footer-wrap" style={styles.footer}>
       <div className="footer-left" style={styles.footerLeft}>
-        CHAINPASS_PSL © 2026 · BUILT ON WIREFLUID · ALL RIGHTS RESERVED
+        CHAINPASS_PSL © 2026 · BUILT ON WIREFLUID TESTNET · ALL RIGHTS RESERVED
       </div>
       <div className="footer-right" style={styles.footerRight}>
         <Link href="/docs" style={styles.footerLink}>DOCS</Link>
-        <a href="https://github.com" style={styles.footerLink}>GITHUB</a>
+        <a href="https://github.com/Asadjafri9/Chain-Pass-Psl" style={styles.footerLink}>GITHUB</a>
         <Link href="/docs" style={styles.footerLink}>CONTRACT</Link>
         <a href="#" style={styles.footerLink}>CONTACT</a>
       </div>

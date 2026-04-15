@@ -6,7 +6,6 @@ const RPC_URL = process.env.NEXT_PUBLIC_WIREFLUID_RPC_URL || 'https://evm.wirefl
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || contractInfo.address;
 const NETWORK_LABEL = process.env.NEXT_PUBLIC_NETWORK_NAME || 'WireFluid Testnet';
 const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID || '92533';
-
 export default function Ticker() {
   const [stats, setStats] = useState({
     contractStatus: 'CHECKING',
@@ -100,6 +99,11 @@ export default function Ticker() {
     { label: 'GAS', value: stats.gasPrice, gold: false },
     { label: 'NETWORK', value: NETWORK_LABEL.toUpperCase(), gold: false },
     { label: 'CHAIN_ID', value: CHAIN_ID, gold: false },
+    { label: 'MINT_RULE', value: '1_PASS_PER_WALLET_PER_MATCH', gold: true },
+    { label: 'PASS_CAP', value: 'MAX_5_PEOPLE', gold: false },
+    { label: 'ENTRY', value: 'QR_PLUS_CNIC_HASH', gold: false },
+    { label: 'SCANNER_ROLE', value: 'OWNER_OR_AUTHORIZED', gold: true },
+    { label: 'SEASON', value: 'PSL_2026', gold: false },
   ];
 
   const TickerItems = () => (
