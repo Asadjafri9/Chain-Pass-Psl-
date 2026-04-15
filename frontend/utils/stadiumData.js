@@ -6,7 +6,7 @@ export const PSL_TEAMS = [
   'Multan Sultans',
   'Peshawar Zalmi',
   'Quetta Gladiators',
-  'Rawalpindi',
+  'Rawalpindiz',
 ];
 
 export const PSL_STADIUMS = [

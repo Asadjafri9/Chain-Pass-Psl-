@@ -36,7 +36,7 @@ function arcPath(cx, cy, rx, ry, startDeg, endDeg, innerRx, innerRy) {
   ].join(' ');
 }
 
-export default function StadiumMap({ allEnclosures, activeEnclosures, stadiumName }) {
+export default function StadiumMap({ allEnclosures, activeEnclosures, stadiumName, selectedEnclosure, onSelectEnclosure }) {
   const [hovered, setHovered] = useState(null);
 
   if (!allEnclosures || allEnclosures.length === 0) return null;
@@ -110,6 +110,7 @@ export default function StadiumMap({ allEnclosures, activeEnclosures, stadiumNam
             const d = arcPath(CX, CY, OUTER_RX, OUTER_RY, startAngle, endAngle, INNER_RX, INNER_RY);
             const isActive = activeNames.has(enc.name);
             const isHovered = hovered === enc.name;
+            const isSelected = selectedEnclosure === enc.name;
             const catColor = CATEGORY_COLORS[enc.category] || CATEGORY_COLORS['General'];
             const color = catColor.fill;
 
@@ -118,28 +119,32 @@ export default function StadiumMap({ allEnclosures, activeEnclosures, stadiumNam
 
             let fillColor;
             if (!isActive) fillColor = 'rgba(255,255,255,0.02)';
-            else if (isHovered) fillColor = color;
+            else if (isHovered || isSelected) fillColor = color;
             else fillColor = `${color}BB`;
 
             return (
               <g key={enc.name}
                 onMouseEnter={() => setHovered(enc.name)}
                 onMouseLeave={() => setHovered(null)}
+                onClick={() => {
+                  if (!isActive) return;
+                  onSelectEnclosure?.(enc.name);
+                }}
                 style={{ cursor: 'pointer' }}
               >
                 <path
                   d={d}
                   fill={fillColor}
-                  stroke={isActive ? (isHovered ? '#ffffff' : color) : 'rgba(255,255,255,0.06)'}
-                  strokeWidth={isHovered ? 1.8 : 0.6}
-                  filter={isHovered && isActive ? 'url(#segGlow)' : undefined}
+                  stroke={isActive ? (isHovered || isSelected ? '#ffffff' : color) : 'rgba(255,255,255,0.06)'}
+                  strokeWidth={isHovered || isSelected ? 1.8 : 0.6}
+                  filter={(isHovered || isSelected) && isActive ? 'url(#segGlow)' : undefined}
                   style={{ transition: 'all 0.25s ease' }}
                 />
                 {segAngle > 16 && isActive && (
                   <text
                     x={labelPt[0]} y={labelPt[1]}
                     textAnchor="middle" dominantBaseline="central"
-                    fill={isHovered ? '#fff' : `${color}99`}
+                    fill={isHovered || isSelected ? '#fff' : `${color}99`}
                     fontFamily="Space Mono, monospace"
                     fontSize={segAngle > 28 ? '6.5' : '5'}
                     letterSpacing="0.3"

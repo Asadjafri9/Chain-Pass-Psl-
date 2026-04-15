@@ -182,6 +182,7 @@ export default function MintForm() {
       style={styles.container} 
       data-stadium-name={selectedMatchForMap?.stadium || ''}
       data-active-enclosures={JSON.stringify(selectedMatchForMap?.enclosures.map(e => e.name) || [])}
+      data-selected-enclosure={form.enclosure || ''}
     >
       <div style={styles.header}>
         <div style={styles.secTag}>// PUBLIC_MINT</div>

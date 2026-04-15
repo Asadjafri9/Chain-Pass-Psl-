@@ -2,6 +2,19 @@ import { useEffect, useMemo, useState } from 'react';
 import { useWeb3 } from '../utils/Web3Context';
 import { PSL_TEAMS } from '../utils/stadiumData';
 
+const TEAM_LOGOS = {
+  'hyderabad kingsmen': '/team_logos/hyderabad.png',
+  'islamabad united': '/team_logos/islamabad.png',
+  'karachi kings': '/team_logos/Karachi.png',
+  'lahore qalandars': '/team_logos/lahore.png',
+  'multan sultans': '/team_logos/multan.png',
+  'peshawar zalmi': '/team_logos/peshawar.png',
+  'quetta gladiators': '/team_logos/quetta.png',
+  'rawalpindiz': '/team_logos/rawalpindiz.png',
+};
+
+const getTeamLogo = (team) => TEAM_LOGOS[team.toLowerCase()] || '';
+
 export default function Leaderboard() {
   const { contract, account, web3Error } = useWeb3();
   const [overallRows, setOverallRows] = useState([]);
@@ -228,10 +241,22 @@ export default function Leaderboard() {
         <div style={styles.teamGrid}>
           {PSL_TEAMS.map((team) => {
             const rows = teamRows[team] || [];
+            const logo = getTeamLogo(team);
             return (
               <div key={team} style={styles.teamCard}>
                 <div style={styles.teamCardHeader}>
-                  <div style={styles.teamName}>{team.toUpperCase()}</div>
+                  <div style={styles.teamTitleRow}>
+                    {logo ? (
+                      <img
+                        src={logo}
+                        alt={`${team} logo`}
+                        style={styles.teamLogo}
+                      />
+                    ) : (
+                      <div style={styles.teamLogoFallback} />
+                    )}
+                    <div style={styles.teamName}>{team.toUpperCase()}</div>
+                  </div>
                   <div style={styles.teamMeta}>
                     {rows.length.toLocaleString()} WALLETS
                   </div>
@@ -425,6 +450,24 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '6px',
+  },
+  teamTitleRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  teamLogo: {
+    width: '26px',
+    height: '26px',
+    objectFit: 'contain',
+    filter: 'drop-shadow(0 0 6px rgba(0,255,106,0.2))',
+  },
+  teamLogoFallback: {
+    width: '26px',
+    height: '26px',
+    borderRadius: '6px',
+    border: '1px solid var(--border2)',
+    background: 'rgba(255,255,255,0.03)',
   },
   teamName: {
     fontFamily: 'var(--display)',

@@ -63,13 +63,39 @@ function MintMapBridge() {
   const [stadiumName, setStadiumName] = useState('');
   const [allEnclosures, setAllEnclosures] = useState([]);
   const [activeEnclosures, setActiveEnclosures] = useState([]);
+  const [selectedEnclosure, setSelectedEnclosure] = useState('');
 
   useEffect(() => {
+    let currentSelect = null;
+
+    const handleSelectChange = (event) => {
+      const target = event?.target;
+      const option = target?.selectedOptions?.[0];
+      const label = option?.textContent || '';
+      const value = option?.value || target?.value || '';
+      const match = label ? label.split(' — ')[0].trim() : '';
+      const finalValue = match || value;
+      if (finalValue && finalValue !== selectedEnclosure) {
+        setSelectedEnclosure(finalValue);
+      }
+    };
+
     const updateMapData = () => {
       const el = document.querySelector('[data-stadium-name]');
       if (el) {
         const name = el.getAttribute('data-stadium-name');
         const activeEncStr = el.getAttribute('data-active-enclosures');
+        const selectedEnc = el.getAttribute('data-selected-enclosure') || '';
+        const enclosureSelect = document.querySelector('select[name="enclosure"]');
+        if (enclosureSelect && enclosureSelect !== currentSelect) {
+          if (currentSelect) {
+            currentSelect.removeEventListener('change', handleSelectChange);
+          }
+          enclosureSelect.addEventListener('change', handleSelectChange);
+          currentSelect = enclosureSelect;
+        }
+
+        const selectedValue = enclosureSelect?.selectedOptions?.[0]?.value || enclosureSelect?.value || selectedEnc;
         let activeNames = [];
         try {
           if (activeEncStr) activeNames = JSON.parse(activeEncStr);
@@ -81,15 +107,27 @@ function MintMapBridge() {
           setAllEnclosures(fullEnclosures);
           setActiveEnclosures(fullEnclosures.filter(enc => activeNames.includes(enc.name)));
         }
+        const selectedLabel = enclosureSelect?.selectedOptions?.[0]?.textContent || '';
+        const labelMatch = selectedLabel ? selectedLabel.split(' — ')[0].trim() : '';
+        const finalValue = labelMatch || selectedValue;
+
+        if (finalValue !== selectedEnclosure) {
+          setSelectedEnclosure(finalValue);
+        }
       }
     };
 
     const observer = new MutationObserver(updateMapData);
-    observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['data-stadium-name', 'data-active-enclosures'] });
+    observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['data-stadium-name', 'data-active-enclosures', 'data-selected-enclosure'] });
     updateMapData(); // Initial check
 
-    return () => observer.disconnect();
-  }, [stadiumName, activeEnclosures.length]);
+    return () => {
+      observer.disconnect();
+      if (currentSelect) {
+        currentSelect.removeEventListener('change', handleSelectChange);
+      }
+    };
+  }, [stadiumName, activeEnclosures.length, selectedEnclosure]);
 
   if (!stadiumName || allEnclosures.length === 0) {
     return (
@@ -110,6 +148,13 @@ function MintMapBridge() {
         allEnclosures={allEnclosures}
         activeEnclosures={activeEnclosures}
         stadiumName={stadiumName}
+        selectedEnclosure={selectedEnclosure}
+        onSelectEnclosure={(name) => {
+          const enclosureSelect = document.querySelector('select[name="enclosure"]');
+          if (!enclosureSelect) return;
+          enclosureSelect.value = name;
+          enclosureSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }}
       />
     </div>
   );
