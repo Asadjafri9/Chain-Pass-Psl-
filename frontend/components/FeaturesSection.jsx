@@ -3,9 +3,9 @@ import { useState } from 'react';
 const FEATURES = [
   {
     idx: 'C_01 //',
-    title: 'PRICE_CAP_ENFORCEMENT',
-    desc: 'A hard resale limit is permanently encoded in the smart contract. Any transaction above original price + 10% is automatically rejected by the blockchain. No admin override — ever.',
-    pill: 'STRICTLY_BLOCKCHAIN',
+    title: 'SOULBOUND_LOCK',
+    desc: 'Tickets are soulbound ERC-721 NFTs. Transfers are disabled at the contract level, so ownership stays with the original buyer.',
+    pill: 'NON_TRANSFERABLE',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
         <rect x="3" y="11" width="18" height="11" rx="1" />
@@ -15,9 +15,22 @@ const FEATURES = [
   },
   {
     idx: 'C_02 //',
-    title: 'DYNAMIC_QR_PROTOCOL',
-    desc: 'The QR code cryptographically regenerates every 60 seconds using the holder\'s private key signature. Screenshots are useless — the ticket expires the moment it is captured.',
-    pill: 'ANTI_SCREENSHOT',
+    title: 'MATCH_CAP_ENFORCEMENT',
+    desc: 'Matches are registered on-chain with stadium capacity and enclosure limits. The contract enforces availability at mint time.',
+    pill: 'ON_CHAIN_RULES',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
+        <path d="M4 7h16" />
+        <path d="M4 12h16" />
+        <path d="M4 17h16" />
+      </svg>
+    ),
+  },
+  {
+    idx: 'C_03 //',
+    title: 'DYNAMIC_QR_ENTRY',
+    desc: 'Gate entry uses a rotating, signed QR payload. Scanners verify ownership and mark tickets as used on-chain.',
+    pill: 'GATE_VERIFIED',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -25,45 +38,35 @@ const FEATURES = [
     ),
   },
   {
-    idx: 'C_03 //',
-    title: 'AUTO_ROYALTY_SPLIT',
-    desc: 'Every secondary sale automatically routes 3% to PCB on-chain. Zero manual intervention — the smart contract handles the atomic split at transaction execution.',
-    pill: 'ZERO_MANUAL',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
-        <circle cx="12" cy="12" r="10" />
-        <polyline points="12 6 12 12 16 14" />
-      </svg>
-    ),
-  },
-  {
     idx: 'C_04 //',
-    title: 'FIAT_PAYMENT_BRIDGE',
-    desc: 'Pay in PKR via EasyPaisa or JazzCash. The liquidity bridge silently converts PKR to WIRE and mints the NFT ticket. Zero crypto knowledge required from the user.',
-    pill: 'FIAT_ABSTRACTION',
+    title: 'SCANNER_AUTHORIZATION',
+    desc: 'Only approved scanners and contract owners can validate entry. Unauthorized scans are rejected at the contract level.',
+    pill: 'ROLE_GATED',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
-        <rect x="1" y="4" width="22" height="16" rx="2" />
-        <line x1="1" y1="10" x2="23" y2="10" />
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <path d="M3 10h18" />
       </svg>
     ),
   },
   {
     idx: 'C_05 //',
-    title: 'WEB3_ABSTRACT_LOGIN',
-    desc: 'Sign in with Google or phone number. Web3Auth silently provisions a non-custodial blockchain wallet — no seed phrase, no private key shown. Pure Web2 experience, Web3 security.',
-    pill: 'ZERO_CRYPTO_UX',
+    title: 'FAN_LEADERBOARDS',
+    desc: 'Leaderboards are computed from on-chain tickets. Each match contributes points to both teams in the fixture.',
+    pill: 'TEAM_RANKINGS',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-        <circle cx="12" cy="7" r="4" />
+        <path d="M8 21h8" />
+        <path d="M12 17v4" />
+        <path d="M7 4h10" />
+        <path d="M6 4l2 10h8l2-10" />
       </svg>
     ),
   },
   {
     idx: 'C_06 //',
     title: 'PUBLIC_LEDGER_AUDIT',
-    desc: 'Every ticket\'s complete ownership history is publicly verifiable on-chain. Anyone can audit — transparent, immutable, and tamper-proof by mathematical design.',
+    desc: 'Ticket state is public and auditable on-chain, including match linkage, mint counts, and entry usage.',
     pill: 'OPEN_LEDGER',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--g)" strokeWidth="1.5" strokeLinecap="round">

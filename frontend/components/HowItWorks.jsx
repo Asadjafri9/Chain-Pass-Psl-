@@ -1,18 +1,18 @@
 const STEPS = [
   {
     num: '01',
-    title: 'LOGIN_WITH_GOOGLE',
-    desc: 'Sign in with Google or phone number. Web3Auth automatically provisions a non-custodial blockchain wallet — the user never sees a seed phrase or private key.',
+    title: 'LOGIN_WITH_WALLET',
+    desc: 'Connect your wallet to verify your identity. Your ticket ownership stays bound to the same wallet from mint to entry.',
   },
   {
     num: '02',
-    title: 'PAY_PKR_VIA_EASYPAISA',
-    desc: 'Complete payment in Pakistani rupees. The backend liquidity bridge converts PKR to WIRE and mints the NFT ticket — all handled transparently in the background.',
+    title: 'PAY_WITH_WIREFLUID',
+    desc: 'Pay directly on WireFluid. The mint transaction is recorded on-chain and tied to your wallet.',
   },
   {
     num: '03',
-    title: 'NFT_APPEARS_IN_MY_TICKETS',
-    desc: 'The ticket appears in the "My Tickets" tab. Clean, simple interface — no wallet jargon, no blockchain complexity exposed to the end user.',
+    title: 'NFT_LIVES_IN_WALLET',
+    desc: 'Your ticket appears in "My Tickets" as a verifiable NFT. It is a permanent on-chain record of attendance and fan status.',
   },
   {
     num: '04',
@@ -28,7 +28,7 @@ export default function HowItWorks() {
         <div style={styles.tag}>// V3</div>
         <div style={styles.title}>HOW_IT<br />WORKS</div>
         <div style={styles.subtitle}>
-          No crypto background required. Four steps from purchase to stadium gate.
+          Wallet-first flow. Four steps from mint to stadium gate.
         </div>
       </div>
       <div className="how-it-works-right" style={styles.right}>

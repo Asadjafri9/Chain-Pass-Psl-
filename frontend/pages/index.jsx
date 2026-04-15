@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <Head>
         <title>ChainPass PSL — Blockchain Ticketing</title>
-        <meta name="description" content="PSL tickets as NFTs. Price cap enforced by smart contract. No scalping. No fakes." />
+        <meta name="description" content="PSL tickets as soulbound NFTs. On-chain entry verification, fan leaderboards, and real-time match tracking." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
@@ -42,10 +42,9 @@ export default function Home() {
                 </h1>
 
                 <p style={styles.heroDesc}>
-                  Every PSL ticket is a <strong style={{ color: 'var(--text)', fontWeight: 400 }}>blockchain NFT</strong> —
-                  price cap <strong style={{ color: 'var(--text)', fontWeight: 400 }}>enforced by smart contract</strong>,
-                  fake tickets mathematically impossible, and resale only happens at a fair price.{' '}
-                  <strong style={{ color: 'var(--text)', fontWeight: 400 }}>The code is the law.</strong>
+                  Every PSL ticket is a <strong style={{ color: 'var(--text)', fontWeight: 400 }}>soulbound NFT</strong> —
+                  minted on-chain, verified at the gate, and tracked across fan leaderboards by match participation.{' '}
+                  <strong style={{ color: 'var(--text)', fontWeight: 400 }}>Ownership is cryptographic. Entry is provable.</strong>
                 </p>
 
                 <div style={styles.heroActions}>
@@ -55,9 +54,9 @@ export default function Home() {
                 <div style={styles.badges}>
                   {[
                     { label: 'WIREFLUID_TESTNET', gold: false },
-                    { label: 'WEB3AUTH', gold: false },
-                    { label: 'EASYPAY_BRIDGE', gold: true },
-                    { label: 'CHAINLINK_ORACLE', gold: false },
+                    { label: 'SOULBOUND_NFT', gold: false },
+                    { label: 'FAN_LEADERBOARDS', gold: true },
+                    { label: 'ON_CHAIN_ENTRY', gold: false },
                   ].map((b) => (
                     <span
                       key={b.label}
@@ -79,7 +78,7 @@ export default function Home() {
                   <div style={styles.marketTag}>// MARKETPLACE</div>
                   <h2 style={styles.marketTitle}>BUY TICKETS, SEE THE LEADERBOARD, AND TRACK LIVE DEMAND.</h2>
                   <p style={styles.marketCopy}>
-                    The purchasing flow now lives in the marketplace. Use it to mint tickets, then watch the leaderboard update as the lifetime ticket counts shift.
+                    The purchasing flow now lives in the marketplace. Use it to mint tickets, then watch the fan-based leaderboards update across every team.
                   </p>
                   <Link href="/marketplace" className="nav-cta nav-cta--dark">OPEN_MARKETPLACE ↗</Link>
                   <div className="stats-wrap" style={styles.marketStats}>

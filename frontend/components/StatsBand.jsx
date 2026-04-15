@@ -1,26 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import contractInfo from '../utils/contractData.json';
 
-function useCountUp(target, duration = 1800, prefix = '', startDelay = 500) {
-  const [value, setValue] = useState(0);
+const RPC_URL = process.env.NEXT_PUBLIC_WIREFLUID_RPC_URL || 'https://evm.wirefluid.com';
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || contractInfo.address;
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      let start = 0;
-      const step = target / (duration / 16);
-      const interval = setInterval(() => {
-        start = Math.min(start + step, target);
-        setValue(Math.round(start));
-        if (start >= target) clearInterval(interval);
-      }, 16);
-      return () => clearInterval(interval);
-    }, startDelay);
-    return () => clearTimeout(timer);
-  }, [target, duration, startDelay]);
-
-  return prefix + value.toLocaleString();
-}
-
-function StatBlock({ idx, value, label, pill, pillGold, gold, delay }) {
+function StatBlock({ idx, value, label, pill, pillGold, gold }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -48,16 +33,82 @@ function StatBlock({ idx, value, label, pill, pillGold, gold, delay }) {
 }
 
 export default function StatsBand() {
-  const minted = useCountUp(10240, 1800, '', 500);
-  const blocked = useCountUp(342, 1200, '', 600);
-  const saved = useCountUp(8550000, 2000, 'PKR ', 700);
+  const [stats, setStats] = useState({
+    minted: null,
+    matchTotal: null,
+    activeMatches: null,
+    contractBalance: null,
+  });
+
+  useEffect(() => {
+    let active = true;
+    let timer;
+
+    const loadStats = async () => {
+      try {
+        const provider = new ethers.JsonRpcProvider(RPC_URL);
+        const code = await provider.getCode(CONTRACT_ADDRESS);
+        if (!code || code === '0x') {
+          if (active) {
+            setStats({ minted: null, matchTotal: null, activeMatches: null, contractBalance: null });
+          }
+          return;
+        }
+
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, contractInfo.abi, provider);
+        const [totalSupply, matchCount, balance] = await Promise.all([
+          contract.totalSupply(),
+          contract.getMatchCount(),
+          provider.getBalance(CONTRACT_ADDRESS),
+        ]);
+
+        const matchTotal = Number(matchCount);
+        const matches = await Promise.all(
+          Array.from({ length: matchTotal }, (_, idx) =>
+            contract.matches(idx).catch(() => null)
+          )
+        );
+        const activeMatches = matches.filter((match) => match?.isActive).length;
+        const contractBalance = Number(ethers.formatEther(balance));
+
+        if (active) {
+          setStats({
+            minted: Number(totalSupply),
+            matchTotal,
+            activeMatches,
+            contractBalance,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load live stats:', error);
+        if (active) {
+          setStats({ minted: null, matchTotal: null, activeMatches: null, contractBalance: null });
+        }
+      }
+    };
+
+    loadStats();
+    timer = setInterval(loadStats, 30000);
+
+    return () => {
+      active = false;
+      if (timer) clearInterval(timer);
+    };
+  }, []);
+
+  const mintedDisplay = stats.minted === null ? '--' : stats.minted.toLocaleString();
+  const matchTotalDisplay = stats.matchTotal === null ? '--' : stats.matchTotal.toLocaleString();
+  const activeMatchesDisplay = stats.activeMatches === null ? '--' : stats.activeMatches.toLocaleString();
+  const contractBalanceDisplay = stats.contractBalance === null
+    ? '--'
+    : `${stats.contractBalance.toFixed(3)} WIRE`;
 
   return (
     <div className="stats-band" style={styles.band}>
-      <StatBlock idx="STATS_01 //" value={minted} label="TICKETS_MINTED" pill="STATUS: VERIFIED" />
-      <StatBlock idx="STATS_02 //" value="0" label="FAKE_TICKETS" pill="STATUS: CLEAN" gold pillGold />
-      <StatBlock idx="STATS_03 //" value={blocked} label="SCALP_TXN_BLOCKED" pill="CONTRACT: ENFORCED" />
-      <StatBlock idx="STATS_04 //" value={saved} label="SAVED_FROM_SCALPERS" pill="IMPACT: LIVE" gold pillGold />
+      <StatBlock idx="STATS_01 //" value={mintedDisplay} label="TICKETS_MINTED" pill="SOURCE: ON_CHAIN" />
+      <StatBlock idx="STATS_02 //" value={matchTotalDisplay} label="MATCHES_TOTAL" pill="SOURCE: ON_CHAIN" />
+      <StatBlock idx="STATS_03 //" value={activeMatchesDisplay} label="MATCHES_ACTIVE" pill="STATUS: LIVE" />
+      <StatBlock idx="STATS_04 //" value={contractBalanceDisplay} label="CONTRACT_BALANCE" pill="ASSETS: CUSTODIAL" gold pillGold />
 
       <style>{`
         @media (max-width: 860px) {
@@ -76,7 +127,6 @@ const styles = {
     display: 'grid',
     gridTemplateColumns: 'repeat(4, 1fr)',
     borderBottom: '1px solid var(--border)',
-    // Responsive via className .stats-band applied below
   },
   block: {
     padding: 'clamp(20px, 4vw, 36px) clamp(16px, 3vw, 40px)',

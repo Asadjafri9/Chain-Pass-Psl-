@@ -4,28 +4,41 @@ import Ticker from '../components/Ticker';
 
 export default function Docs() {
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || 'Not configured';
+  const networkName = process.env.NEXT_PUBLIC_NETWORK_NAME || 'WireFluid Testnet';
+  const chainId = process.env.NEXT_PUBLIC_CHAIN_ID || '92533';
+  const rpcUrl = process.env.NEXT_PUBLIC_WIREFLUID_RPC_URL || 'https://evm.wirefluid.com';
 
   const sections = [
     {
       tag: '01',
       title: 'THE_MISSION',
-      content: 'ChainPass PSL was built to solve the systemic problem of ticket scalping in Pakistan\'s premier cricket league. Conventionally, fans are forced to pay 5x-10x the original price on the black market. We use the blockchain to ensure that the code is the law.'
+      content: 'ChainPass PSL delivers verifiable, on-chain ticket ownership for PSL matches. Tickets are minted on WireFluid, tied to the buyer, and validated at the stadium gate without manual overrides.'
     },
     {
       tag: '02',
-      title: 'ANTI_SCALP_ENFORCEMENT',
-      content: 'Every ticket is a unique NFT. Our smart contract contains a hard-coded "Price Cap" logic. No ticket can be listed for more than 110% of its original mint price. If a seller tries to list it for more, the blockchain transaction itself is rejected.'
+      title: 'SOULBOUND_OWNERSHIP',
+      content: 'Tickets are soulbound ERC-721 NFTs. Transfers are disabled at the contract level, so ownership stays locked to the original wallet from mint to entry.'
     },
     {
       tag: '03',
-      title: 'ROYALTY_DISTRIBUTION',
-      content: 'On every secondary sale, 3% of the transaction value is automatically routed back to the PCB (Pakistan Cricket Board) vault. This ensures the organizers benefit from the ecosystem\'s growth while fans get fair prices.'
+      title: 'MATCH_REGISTRY',
+      content: 'Admins register matches on-chain with teams, stadium, time, and capacity. Each ticket binds to a match and enclosure, and the contract enforces match availability and capacity limits.'
     },
     {
       tag: '04',
       title: 'SECURE_ENTRY_QR',
-      content: 'To prevent screenshot fraud, entry QR codes are generated dynamically. They require a cryptographic signature from the owner\'s private key and refresh every 60 seconds. Your ticket is tied to your wallet, and only you can produce a valid gate entry token.'
-    }
+      content: 'Entry QR codes are generated dynamically and signed by the holder. Gate scanners verify ownership on-chain before marking a ticket as used.'
+    },
+    {
+      tag: '05',
+      title: 'FAN_LEADERBOARDS',
+      content: 'Leaderboards are computed from on-chain tickets. Every match contributes points to both teams in the fixture, highlighting the most engaged fan wallets across the season.'
+    },
+    {
+      tag: '06',
+      title: 'WIRE_PAYMENTS',
+      content: 'Ticket purchases are executed directly on WireFluid using the native WIRE token. All payments are verifiable on-chain and tied to the mint transaction.'
+    },
   ];
 
   return (
@@ -47,8 +60,10 @@ export default function Docs() {
               <ul style={styles.sideList}>
                 {sections.map(s => (
                   <li key={s.tag} style={styles.sideItem}>
-                    <span style={styles.sideNum}>{s.tag}</span>
-                    <span>{s.title}</span>
+                    <a href={`#section-${s.tag}`} style={styles.sideLink}>
+                      <span style={styles.sideNum}>{s.tag}</span>
+                      <span>{s.title}</span>
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -67,7 +82,7 @@ export default function Docs() {
 
               <div style={styles.sections}>
                 {sections.map(s => (
-                  <div key={s.tag} style={styles.docSection}>
+                  <div key={s.tag} id={`section-${s.tag}`} style={styles.docSection}>
                     <div style={styles.secLine} />
                     <div style={styles.secHeader}>
                       <span style={styles.secNum}>{s.tag}</span>
@@ -81,8 +96,8 @@ export default function Docs() {
               <div style={styles.footerInfo}>
                 <div style={styles.infoHex}>i</div>
                 <p style={styles.footerText}>
-                  This system is configured for <strong>WireFluid Testnet</strong> (Chain ID: <strong>92533</strong>){' '}
-                  using RPC <strong>https://evm.wirefluid.com</strong>.
+                  This system is configured for <strong>{networkName}</strong> (Chain ID: <strong>{chainId}</strong>){' '}
+                  using RPC <strong>{rpcUrl}</strong>.
                 </p>
               </div>
             </section>
@@ -91,6 +106,7 @@ export default function Docs() {
       </div>
 
       <style>{`
+        html { scroll-behavior: smooth; }
         @media (max-width: 860px) {
           .docs-wrapper { grid-template-columns: 1fr !important; }
           .docs-sidebar { position: static !important; display: flex; flex-direction: column; gap: 16px; border-bottom: 1px solid var(--border); padding-bottom: 28px; margin-bottom: 8px; }
@@ -137,6 +153,13 @@ const styles = {
     letterSpacing: '1px',
     transition: 'color 0.2s',
   },
+  sideLink: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '14px',
+    color: 'inherit',
+    textDecoration: 'none',
+  },
   sideNum: { color: 'var(--g)', fontSize: '10px', flexShrink: 0 },
   contractBox: {
     background: 'rgba(255,255,255,0.02)',
@@ -147,6 +170,7 @@ const styles = {
   detLabel: { fontFamily: 'var(--mono)', fontSize: '9px', color: 'var(--dim)', marginBottom: '8px', letterSpacing: '1.5px' },
   address: { fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--g)', wordBreak: 'break-all' },
   content: { minWidth: 0 },
+  docSection: { position: 'relative', scrollMarginTop: '120px' },
   header: {
     marginBottom: 'clamp(40px, 6vw, 80px)',
     borderBottom: '1px solid var(--border)',

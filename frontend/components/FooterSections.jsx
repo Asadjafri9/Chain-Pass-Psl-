@@ -27,7 +27,7 @@ export function ScaleSection() {
         <div style={styles.tag}>// TECH_STACK</div>
         <div style={styles.big}>WIRE<br /><span style={{ color: 'var(--g)' }}>FLUID</span></div>
         <div className="scale-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
-          {['Solidity smart contracts (ERC-721)', 'Web3Auth — social login abstraction', 'Chainlink oracles for match data', 'Safepay / PayMob PKR fiat bridge'].map((item) => (
+          {['WireFluid EVM network', 'Solidity ERC-721 soulbound contracts', 'On-chain match registry + scanners', 'Next.js + Ethers.js frontend'].map((item) => (
             <div key={item} style={styles.scItem}>
               <div style={styles.dot} />
               {item}
@@ -42,12 +42,11 @@ export function ScaleSection() {
 export function CTASection() {
   const params = [
     { k: 'NETWORK', v: 'WIREFLUID TESTNET', gold: false },
-    { k: 'TOKEN_STANDARD', v: 'ERC-721', gold: false },
-    { k: 'RESALE_CAP', v: 'ORIGINAL + 10%', gold: false },
-    { k: 'ROYALTY_SPLIT', v: '3% → PCB', gold: true },
-    { k: 'QR_REFRESH', v: 'EVERY 30s', gold: false },
+    { k: 'TOKEN_STANDARD', v: 'ERC-721 (SOULBOUND)', gold: false },
+    { k: 'FAN_LEADERBOARD', v: 'TEAM + OVERALL', gold: true },
+    { k: 'QR_REFRESH', v: 'EVERY 90s', gold: false },
     { k: 'AUTH', v: 'WEB3AUTH', gold: false },
-    { k: 'PAYMENT', v: 'EASYPAY BRIDGE', gold: true },
+    { k: 'PAYMENT', v: 'WIREFLUID', gold: true },
   ];
 
   return (

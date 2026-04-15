@@ -22,14 +22,14 @@ export default function LeaderboardPage() {
           <Ticker />
 
           <main style={styles.main}>
-            <header style={styles.header}>
+            <header style={styles.header}> 
               <div style={styles.eyebrow}>
                 <div style={styles.dot} />
                 <span style={styles.eyebrowText}>// LIFETIME_LEADERBOARD</span>
               </div>
               <h1 style={styles.title}>TOP WALLETS BY TOTAL TICKETS.</h1>
               <p style={styles.desc}>
-                This page ranks wallet addresses by the number of PSL tickets they have minted across all time.
+                This page ranks wallets by total lifetime people covered, plus fan-base rankings for every team.
               </p>
             </header>
 
